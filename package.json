@@ -16,10 +16,13 @@
   },
   "dependencies": {
     "@expo/vector-icons": "^14.0.2",
+    "@react-native-async-storage/async-storage": "1.23.1",
     "@react-native-community/netinfo": "11.3.1",
     "@react-navigation/native": "^6.1.18",
     "@react-navigation/stack": "^6.4.1",
+    "@rneui/themed": "^4.0.0-rc.8",
     "@stream-io/flat-list-mvcp": "^0.10.3",
+    "@supabase/supabase-js": "^2.45.0",
     "@types/react-navigation": "^3.4.0",
     "expo": "~51.0.24",
     "expo-constants": "~16.0.2",
