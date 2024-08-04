@@ -2,20 +2,25 @@ import { PropsWithChildren, useEffect, useState } from "react";
 import { ActivityIndicator } from 'react-native';
 import { StreamChat } from 'stream-chat';
 import { Chat, OverlayProvider } from 'stream-chat-expo';
+import { useAuth } from "./AuthProvider";
 
 const client = StreamChat.getInstance(process.env.EXPO_PUBLIC_STREAM_API_KEY);
 
 
 export default function ChatProvider({children}: PropsWithChildren) {
     const [isReady, setIsReady] = useState(false);
+    const { profile } = useAuth();
 
     useEffect(() => {
+        if (!profile) {
+            return;
+        }
         const connect = async () => {
             await client.connectUser({
-                id: 'user-id1',
-                name: 'user-name1',
+                id: profile.id,
+                name: profile.full_name,
             },
-            client.devToken('user-id1')
+            client.devToken(profile.id)
             );
             setIsReady(true);
 
@@ -27,10 +32,12 @@ export default function ChatProvider({children}: PropsWithChildren) {
         connect();
 
         return () => {
-            client.disconnectUser();
+            if(isReady){
+                client.disconnectUser();
+            }
             setIsReady(false);
         }
-    }, []);
+    }, [profile?.id]);
 
     if (!isReady) {
         return <ActivityIndicator />;
